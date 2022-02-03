@@ -1,0 +1,898 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module ad_ldap.ad_ldap</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="ad_ldap.html"><font color="#ffffff">ad_ldap</font></a>.ad_ldap</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/tojo/git/py-ad-ldap2/py-ad-ldap/ad_ldap/ad_ldap.py">/Users/tojo/git/py-ad-ldap2/py-ad-ldap/ad_ldap/ad_ldap.py</a></font></td></tr></table>
+    <p><tt>A&nbsp;module&nbsp;for&nbsp;using&nbsp;ldap&nbsp;to&nbsp;manipulate&nbsp;objects&nbsp;in&nbsp;AD.<br>
+&nbsp;<br>
+This&nbsp;module&nbsp;creates&nbsp;two&nbsp;basic&nbsp;<a href="builtins.html#object">object</a>&nbsp;classes:&nbsp;<a href="#Domain">Domain</a>,&nbsp;and&nbsp;<a href="#ADObject">ADObject</a>.<br>
+&nbsp;<br>
+The&nbsp;<a href="#Domain">Domain</a>&nbsp;class&nbsp;is&nbsp;used&nbsp;for&nbsp;every&nbsp;interaction&nbsp;with&nbsp;the&nbsp;Active&nbsp;Directory<br>
+service&nbsp;itself,&nbsp;such&nbsp;as&nbsp;creating,&nbsp;modifying,&nbsp;or&nbsp;searching&nbsp;for&nbsp;objects.<br>
+&nbsp;<br>
+The&nbsp;<a href="#ADObject">ADObject</a>&nbsp;class&nbsp;represents&nbsp;an&nbsp;<a href="builtins.html#object">object</a>&nbsp;in&nbsp;the&nbsp;directory.&nbsp;&nbsp;It&nbsp;could&nbsp;be&nbsp;a&nbsp;user,<br>
+computer,&nbsp;OU,&nbsp;or&nbsp;any&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;It&nbsp;has&nbsp;an&nbsp;attribute&nbsp;called&nbsp;'properties'&nbsp;that&nbsp;is&nbsp;a<br>
+dict&nbsp;of&nbsp;the&nbsp;properties&nbsp;of&nbsp;the&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;To&nbsp;modify&nbsp;a&nbsp;property,&nbsp;you&nbsp;change&nbsp;it&nbsp;in<br>
+the&nbsp;dict&nbsp;and&nbsp;call&nbsp;SetProperties().&nbsp;&nbsp;Every&nbsp;<a href="#ADObject">ADObject</a>&nbsp;has&nbsp;a&nbsp;'_domain_obj'&nbsp;property<br>
+that&nbsp;is&nbsp;a&nbsp;link&nbsp;to&nbsp;the&nbsp;<a href="#Domain">Domain</a>&nbsp;<a href="builtins.html#object">object</a>,&nbsp;which&nbsp;will&nbsp;do&nbsp;the&nbsp;actual&nbsp;modifications&nbsp;to<br>
+the&nbsp;directory.<br>
+&nbsp;<br>
+<a href="#User">User</a>,&nbsp;<a href="#Computer">Computer</a>,&nbsp;<a href="#Group">Group</a>,&nbsp;and&nbsp;<a href="#Container">Container</a>&nbsp;all&nbsp;inherit&nbsp;from&nbsp;<a href="#ADObject">ADObject</a>,&nbsp;and&nbsp;add&nbsp;some<br>
+attributes&nbsp;and&nbsp;methods&nbsp;for&nbsp;convenience.&nbsp;&nbsp;For&nbsp;example,&nbsp;the&nbsp;<a href="#User">User</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;has<br>
+Disable()&nbsp;and&nbsp;Enable()&nbsp;methods&nbsp;for&nbsp;disabling&nbsp;and&nbsp;enabling&nbsp;user&nbsp;accounts,&nbsp;and&nbsp;a<br>
+'disabled'&nbsp;property&nbsp;to&nbsp;make&nbsp;it&nbsp;easier&nbsp;to&nbsp;tell&nbsp;if&nbsp;an&nbsp;<a href="builtins.html#object">object</a>&nbsp;has&nbsp;been&nbsp;disabled.<br>
+&nbsp;<br>
+&nbsp;<br>
+Copyright&nbsp;2010&nbsp;Google&nbsp;Inc.<br>
+&nbsp;<br>
+Licensed&nbsp;under&nbsp;the&nbsp;Apache&nbsp;License,&nbsp;Version&nbsp;2.0&nbsp;(the&nbsp;"License");<br>
+you&nbsp;may&nbsp;not&nbsp;use&nbsp;this&nbsp;file&nbsp;except&nbsp;in&nbsp;compliance&nbsp;with&nbsp;the&nbsp;License.<br>
+You&nbsp;may&nbsp;obtain&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;License&nbsp;at<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a><br>
+&nbsp;<br>
+Unless&nbsp;required&nbsp;by&nbsp;applicable&nbsp;law&nbsp;or&nbsp;agreed&nbsp;to&nbsp;in&nbsp;writing,&nbsp;software<br>
+distributed&nbsp;under&nbsp;the&nbsp;License&nbsp;is&nbsp;distributed&nbsp;on&nbsp;an&nbsp;"AS&nbsp;IS"&nbsp;BASIS,<br>
+WITHOUT&nbsp;WARRANTIES&nbsp;OR&nbsp;CONDITIONS&nbsp;OF&nbsp;ANY&nbsp;KIND,&nbsp;either&nbsp;express&nbsp;or&nbsp;implied.<br>
+See&nbsp;the&nbsp;License&nbsp;for&nbsp;the&nbsp;specific&nbsp;language&nbsp;governing&nbsp;permissions&nbsp;and<br>
+limitations&nbsp;under&nbsp;the&nbsp;License.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="ad_ldap.constants.html">ad_ldap.constants</a><br>
+<a href="copy.html">copy</a><br>
+</td><td width="25%" valign=top><a href="ad_ldap.errors.html">ad_ldap.errors</a><br>
+<a href="ldap.html">ldap</a><br>
+</td><td width="25%" valign=top><a href="re.html">re</a><br>
+<a href="time.html">time</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="ad_ldap.ad_ldap.html#ADObject">ADObject</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="ad_ldap.ad_ldap.html#Container">Container</a>
+</font></dt><dt><font face="helvetica, arial"><a href="ad_ldap.ad_ldap.html#Group">Group</a>
+</font></dt><dt><font face="helvetica, arial"><a href="ad_ldap.ad_ldap.html#User">User</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="ad_ldap.ad_ldap.html#Computer">Computer</a>
+</font></dt></dl>
+</dd>
+</dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="ad_ldap.ad_ldap.html#Domain">Domain</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ADObject">class <strong>ADObject</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#ADObject">ADObject</a>(distinguished_name,&nbsp;properties,&nbsp;domain_obj)<br>
+&nbsp;<br>
+A&nbsp;generic&nbsp;AD&nbsp;Object.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="ADObject-Delete"><strong>Delete</strong></a>(self)</dt><dd><tt>Delete&nbsp;the&nbsp;current&nbsp;<a href="builtins.html#object">object</a>&nbsp;from&nbsp;AD.</tt></dd></dl>
+
+<dl><dt><a name="ADObject-GetProperties"><strong>GetProperties</strong></a>(self, properties)</dt><dd><tt>Updates&nbsp;self.<strong>properties</strong>&nbsp;with&nbsp;the&nbsp;values&nbsp;from&nbsp;AD.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;properties:&nbsp;a&nbsp;list&nbsp;of&nbsp;properties&nbsp;to&nbsp;retrieve<br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;errors.NonListParameterError:&nbsp;if&nbsp;a&nbsp;string&nbsp;is&nbsp;passed&nbsp;instead&nbsp;of&nbsp;a&nbsp;list</tt></dd></dl>
+
+<dl><dt><a name="ADObject-Move"><strong>Move</strong></a>(self, destination)</dt><dd><tt>Move&nbsp;an&nbsp;AD&nbsp;<a href="builtins.html#object">object</a>&nbsp;from&nbsp;one&nbsp;part&nbsp;of&nbsp;the&nbsp;directory&nbsp;to&nbsp;another.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;destination:&nbsp;the&nbsp;destination&nbsp;DN</tt></dd></dl>
+
+<dl><dt><a name="ADObject-Refresh"><strong>Refresh</strong></a>(self)</dt><dd><tt>Update&nbsp;all&nbsp;properties&nbsp;with&nbsp;values&nbsp;from&nbsp;AD.</tt></dd></dl>
+
+<dl><dt><a name="ADObject-SetProperties"><strong>SetProperties</strong></a>(self)</dt><dd><tt>Write&nbsp;changed&nbsp;properties&nbsp;to&nbsp;Active&nbsp;Directory.<br>
+&nbsp;<br>
+Note:&nbsp;A&nbsp;property&nbsp;must&nbsp;be&nbsp;retrieved&nbsp;at&nbsp;least&nbsp;once&nbsp;before&nbsp;updating.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;True:&nbsp;on&nbsp;success<br>
+&nbsp;&nbsp;False:&nbsp;on&nbsp;failure</tt></dd></dl>
+
+<dl><dt><a name="ADObject-__init__"><strong>__init__</strong></a>(self, distinguished_name, properties, domain_obj)</dt><dd><tt>Initialize&nbsp;the&nbsp;AD&nbsp;<a href="builtins.html#object">object</a>.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;distinguished_name:&nbsp;the&nbsp;full&nbsp;distinguished&nbsp;name&nbsp;of&nbsp;the&nbsp;<a href="builtins.html#object">object</a><br>
+&nbsp;&nbsp;properties:&nbsp;if&nbsp;a&nbsp;list,&nbsp;a&nbsp;list&nbsp;of&nbsp;properties&nbsp;to&nbsp;retrieve.&nbsp;&nbsp;if&nbsp;a&nbsp;hash,&nbsp;it&nbsp;is<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;pre-populated&nbsp;list&nbsp;of&nbsp;properties.&nbsp;&nbsp;If&nbsp;a&nbsp;hash&nbsp;is&nbsp;provided&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mandatory&nbsp;properties&nbsp;are&nbsp;missing,&nbsp;then&nbsp;they&nbsp;will&nbsp;be&nbsp;retrieved<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;by&nbsp;an&nbsp;ldap&nbsp;query<br>
+&nbsp;&nbsp;domain_obj:&nbsp;the&nbsp;<a href="#Domain">Domain</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;that&nbsp;the&nbsp;AD&nbsp;<a href="builtins.html#object">object</a>&nbsp;is&nbsp;associated&nbsp;with</tt></dd></dl>
+
+<dl><dt><a name="ADObject-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>canonical_name</strong></dt>
+<dd><tt>Constructs&nbsp;the&nbsp;canonical&nbsp;name&nbsp;from&nbsp;the&nbsp;distinguished&nbsp;name.</tt></dd>
+</dl>
+<dl><dt><strong>created_time</strong></dt>
+</dl>
+<dl><dt><strong>distinguished_name</strong></dt>
+</dl>
+<dl><dt><strong>modified_time</strong></dt>
+</dl>
+<dl><dt><strong>object_category</strong></dt>
+</dl>
+<dl><dt><strong>object_class</strong></dt>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Computer">class <strong>Computer</strong></a>(<a href="ad_ldap.ad_ldap.html#User">User</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Computer">Computer</a>(distinguished_name,&nbsp;properties,&nbsp;domain_obj)<br>
+&nbsp;<br>
+An&nbsp;Active&nbsp;Directory&nbsp;computer&nbsp;<a href="builtins.html#object">object</a>.<br>
+&nbsp;<br>
+This&nbsp;class&nbsp;exposes&nbsp;computer-specific&nbsp;properties&nbsp;at&nbsp;the&nbsp;top&nbsp;level&nbsp;to&nbsp;make&nbsp;it<br>
+easier&nbsp;to&nbsp;work&nbsp;with&nbsp;computer&nbsp;objects.&nbsp;&nbsp;Note&nbsp;that&nbsp;it&nbsp;also&nbsp;inherits&nbsp;from&nbsp;the<br>
+<a href="#User">User</a>&nbsp;class.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="ad_ldap.ad_ldap.html#Computer">Computer</a></dd>
+<dd><a href="ad_ldap.ad_ldap.html#User">User</a></dd>
+<dd><a href="ad_ldap.ad_ldap.html#ADObject">ADObject</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="Computer-__init__"><strong>__init__</strong></a>(self, distinguished_name, properties, domain_obj)</dt><dd><tt>Initialize&nbsp;the&nbsp;AD&nbsp;<a href="builtins.html#object">object</a>.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;distinguished_name:&nbsp;the&nbsp;full&nbsp;distinguished&nbsp;name&nbsp;of&nbsp;the&nbsp;<a href="builtins.html#object">object</a><br>
+&nbsp;&nbsp;properties:&nbsp;if&nbsp;a&nbsp;list,&nbsp;a&nbsp;list&nbsp;of&nbsp;properties&nbsp;to&nbsp;retrieve.&nbsp;&nbsp;if&nbsp;a&nbsp;hash,&nbsp;it&nbsp;is<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;pre-populated&nbsp;list&nbsp;of&nbsp;properties.&nbsp;&nbsp;If&nbsp;a&nbsp;hash&nbsp;is&nbsp;provided&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mandatory&nbsp;properties&nbsp;are&nbsp;missing,&nbsp;then&nbsp;they&nbsp;will&nbsp;be&nbsp;retrieved<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;by&nbsp;an&nbsp;ldap&nbsp;query<br>
+&nbsp;&nbsp;domain_obj:&nbsp;the&nbsp;<a href="#Domain">Domain</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;that&nbsp;the&nbsp;AD&nbsp;<a href="builtins.html#object">object</a>&nbsp;is&nbsp;associated&nbsp;with</tt></dd></dl>
+
+<dl><dt><a name="Computer-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>dns_hostname</strong></dt>
+</dl>
+<dl><dt><strong>os</strong></dt>
+</dl>
+<dl><dt><strong>os_service_pack</strong></dt>
+</dl>
+<dl><dt><strong>os_version</strong></dt>
+</dl>
+<dl><dt><strong>service_principal_name</strong></dt>
+</dl>
+<hr>
+Methods inherited from <a href="ad_ldap.ad_ldap.html#User">User</a>:<br>
+<dl><dt><a name="Computer-Disable"><strong>Disable</strong></a>(self)</dt><dd><tt>Disable&nbsp;the&nbsp;user&nbsp;<a href="builtins.html#object">object</a>&nbsp;in&nbsp;AD.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;True&nbsp;on&nbsp;success<br>
+&nbsp;&nbsp;False&nbsp;on&nbsp;failure<br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;UserNotEnabledError:&nbsp;if&nbsp;the&nbsp;user&nbsp;is&nbsp;already&nbsp;disabled</tt></dd></dl>
+
+<dl><dt><a name="Computer-Enable"><strong>Enable</strong></a>(self)</dt><dd><tt>Enable&nbsp;the&nbsp;user&nbsp;<a href="builtins.html#object">object</a>&nbsp;in&nbsp;AD.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;True&nbsp;on&nbsp;success<br>
+&nbsp;&nbsp;False&nbsp;on&nbsp;failure<br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;UserNotDisabledError:&nbsp;if&nbsp;the&nbsp;user&nbsp;is&nbsp;not&nbsp;disabled</tt></dd></dl>
+
+<dl><dt><a name="Computer-Unlock"><strong>Unlock</strong></a>(self)</dt><dd><tt>Unlock&nbsp;the&nbsp;user&nbsp;<a href="builtins.html#object">object</a>&nbsp;in&nbsp;AD.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;True&nbsp;on&nbsp;success<br>
+&nbsp;&nbsp;False&nbsp;on&nbsp;failure<br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;UserNotLockedOutError:&nbsp;if&nbsp;the&nbsp;user&nbsp;is&nbsp;not&nbsp;locked&nbsp;out</tt></dd></dl>
+
+<hr>
+Readonly properties inherited from <a href="ad_ldap.ad_ldap.html#User">User</a>:<br>
+<dl><dt><strong>disabled</strong></dt>
+</dl>
+<dl><dt><strong>display_name</strong></dt>
+</dl>
+<dl><dt><strong>locked_out</strong></dt>
+</dl>
+<dl><dt><strong>msds_ua_control_computed</strong></dt>
+</dl>
+<dl><dt><strong>pwd_expired</strong></dt>
+</dl>
+<dl><dt><strong>pwd_never_expires</strong></dt>
+</dl>
+<dl><dt><strong>user_account_control</strong></dt>
+</dl>
+<dl><dt><strong>username</strong></dt>
+</dl>
+<hr>
+Methods inherited from <a href="ad_ldap.ad_ldap.html#ADObject">ADObject</a>:<br>
+<dl><dt><a name="Computer-Delete"><strong>Delete</strong></a>(self)</dt><dd><tt>Delete&nbsp;the&nbsp;current&nbsp;<a href="builtins.html#object">object</a>&nbsp;from&nbsp;AD.</tt></dd></dl>
+
+<dl><dt><a name="Computer-GetProperties"><strong>GetProperties</strong></a>(self, properties)</dt><dd><tt>Updates&nbsp;self.<strong>properties</strong>&nbsp;with&nbsp;the&nbsp;values&nbsp;from&nbsp;AD.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;properties:&nbsp;a&nbsp;list&nbsp;of&nbsp;properties&nbsp;to&nbsp;retrieve<br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;errors.NonListParameterError:&nbsp;if&nbsp;a&nbsp;string&nbsp;is&nbsp;passed&nbsp;instead&nbsp;of&nbsp;a&nbsp;list</tt></dd></dl>
+
+<dl><dt><a name="Computer-Move"><strong>Move</strong></a>(self, destination)</dt><dd><tt>Move&nbsp;an&nbsp;AD&nbsp;<a href="builtins.html#object">object</a>&nbsp;from&nbsp;one&nbsp;part&nbsp;of&nbsp;the&nbsp;directory&nbsp;to&nbsp;another.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;destination:&nbsp;the&nbsp;destination&nbsp;DN</tt></dd></dl>
+
+<dl><dt><a name="Computer-Refresh"><strong>Refresh</strong></a>(self)</dt><dd><tt>Update&nbsp;all&nbsp;properties&nbsp;with&nbsp;values&nbsp;from&nbsp;AD.</tt></dd></dl>
+
+<dl><dt><a name="Computer-SetProperties"><strong>SetProperties</strong></a>(self)</dt><dd><tt>Write&nbsp;changed&nbsp;properties&nbsp;to&nbsp;Active&nbsp;Directory.<br>
+&nbsp;<br>
+Note:&nbsp;A&nbsp;property&nbsp;must&nbsp;be&nbsp;retrieved&nbsp;at&nbsp;least&nbsp;once&nbsp;before&nbsp;updating.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;True:&nbsp;on&nbsp;success<br>
+&nbsp;&nbsp;False:&nbsp;on&nbsp;failure</tt></dd></dl>
+
+<hr>
+Readonly properties inherited from <a href="ad_ldap.ad_ldap.html#ADObject">ADObject</a>:<br>
+<dl><dt><strong>canonical_name</strong></dt>
+<dd><tt>Constructs&nbsp;the&nbsp;canonical&nbsp;name&nbsp;from&nbsp;the&nbsp;distinguished&nbsp;name.</tt></dd>
+</dl>
+<dl><dt><strong>created_time</strong></dt>
+</dl>
+<dl><dt><strong>distinguished_name</strong></dt>
+</dl>
+<dl><dt><strong>modified_time</strong></dt>
+</dl>
+<dl><dt><strong>object_category</strong></dt>
+</dl>
+<dl><dt><strong>object_class</strong></dt>
+</dl>
+<hr>
+Data descriptors inherited from <a href="ad_ldap.ad_ldap.html#ADObject">ADObject</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Container">class <strong>Container</strong></a>(<a href="ad_ldap.ad_ldap.html#ADObject">ADObject</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Container">Container</a>(distinguished_name,&nbsp;properties,&nbsp;domain_obj)<br>
+&nbsp;<br>
+An&nbsp;Active&nbsp;Directory&nbsp;CN&nbsp;or&nbsp;OU&nbsp;<a href="builtins.html#object">object</a>.<br>
+&nbsp;<br>
+This&nbsp;class&nbsp;adds&nbsp;the&nbsp;GetChildren&nbsp;method&nbsp;to&nbsp;make&nbsp;it&nbsp;easier&nbsp;to&nbsp;return&nbsp;a&nbsp;list<br>
+of&nbsp;objects&nbsp;in&nbsp;the&nbsp;container.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="ad_ldap.ad_ldap.html#Container">Container</a></dd>
+<dd><a href="ad_ldap.ad_ldap.html#ADObject">ADObject</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="Container-GetChildren"><strong>GetChildren</strong></a>(self, recursive=False)</dt><dd><tt>Retrieves&nbsp;a&nbsp;list&nbsp;of&nbsp;objects&nbsp;inside&nbsp;the&nbsp;container.</tt></dd></dl>
+
+<dl><dt><a name="Container-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="ad_ldap.ad_ldap.html#ADObject">ADObject</a>:<br>
+<dl><dt><a name="Container-Delete"><strong>Delete</strong></a>(self)</dt><dd><tt>Delete&nbsp;the&nbsp;current&nbsp;<a href="builtins.html#object">object</a>&nbsp;from&nbsp;AD.</tt></dd></dl>
+
+<dl><dt><a name="Container-GetProperties"><strong>GetProperties</strong></a>(self, properties)</dt><dd><tt>Updates&nbsp;self.<strong>properties</strong>&nbsp;with&nbsp;the&nbsp;values&nbsp;from&nbsp;AD.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;properties:&nbsp;a&nbsp;list&nbsp;of&nbsp;properties&nbsp;to&nbsp;retrieve<br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;errors.NonListParameterError:&nbsp;if&nbsp;a&nbsp;string&nbsp;is&nbsp;passed&nbsp;instead&nbsp;of&nbsp;a&nbsp;list</tt></dd></dl>
+
+<dl><dt><a name="Container-Move"><strong>Move</strong></a>(self, destination)</dt><dd><tt>Move&nbsp;an&nbsp;AD&nbsp;<a href="builtins.html#object">object</a>&nbsp;from&nbsp;one&nbsp;part&nbsp;of&nbsp;the&nbsp;directory&nbsp;to&nbsp;another.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;destination:&nbsp;the&nbsp;destination&nbsp;DN</tt></dd></dl>
+
+<dl><dt><a name="Container-Refresh"><strong>Refresh</strong></a>(self)</dt><dd><tt>Update&nbsp;all&nbsp;properties&nbsp;with&nbsp;values&nbsp;from&nbsp;AD.</tt></dd></dl>
+
+<dl><dt><a name="Container-SetProperties"><strong>SetProperties</strong></a>(self)</dt><dd><tt>Write&nbsp;changed&nbsp;properties&nbsp;to&nbsp;Active&nbsp;Directory.<br>
+&nbsp;<br>
+Note:&nbsp;A&nbsp;property&nbsp;must&nbsp;be&nbsp;retrieved&nbsp;at&nbsp;least&nbsp;once&nbsp;before&nbsp;updating.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;True:&nbsp;on&nbsp;success<br>
+&nbsp;&nbsp;False:&nbsp;on&nbsp;failure</tt></dd></dl>
+
+<dl><dt><a name="Container-__init__"><strong>__init__</strong></a>(self, distinguished_name, properties, domain_obj)</dt><dd><tt>Initialize&nbsp;the&nbsp;AD&nbsp;<a href="builtins.html#object">object</a>.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;distinguished_name:&nbsp;the&nbsp;full&nbsp;distinguished&nbsp;name&nbsp;of&nbsp;the&nbsp;<a href="builtins.html#object">object</a><br>
+&nbsp;&nbsp;properties:&nbsp;if&nbsp;a&nbsp;list,&nbsp;a&nbsp;list&nbsp;of&nbsp;properties&nbsp;to&nbsp;retrieve.&nbsp;&nbsp;if&nbsp;a&nbsp;hash,&nbsp;it&nbsp;is<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;pre-populated&nbsp;list&nbsp;of&nbsp;properties.&nbsp;&nbsp;If&nbsp;a&nbsp;hash&nbsp;is&nbsp;provided&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mandatory&nbsp;properties&nbsp;are&nbsp;missing,&nbsp;then&nbsp;they&nbsp;will&nbsp;be&nbsp;retrieved<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;by&nbsp;an&nbsp;ldap&nbsp;query<br>
+&nbsp;&nbsp;domain_obj:&nbsp;the&nbsp;<a href="#Domain">Domain</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;that&nbsp;the&nbsp;AD&nbsp;<a href="builtins.html#object">object</a>&nbsp;is&nbsp;associated&nbsp;with</tt></dd></dl>
+
+<hr>
+Readonly properties inherited from <a href="ad_ldap.ad_ldap.html#ADObject">ADObject</a>:<br>
+<dl><dt><strong>canonical_name</strong></dt>
+<dd><tt>Constructs&nbsp;the&nbsp;canonical&nbsp;name&nbsp;from&nbsp;the&nbsp;distinguished&nbsp;name.</tt></dd>
+</dl>
+<dl><dt><strong>created_time</strong></dt>
+</dl>
+<dl><dt><strong>distinguished_name</strong></dt>
+</dl>
+<dl><dt><strong>modified_time</strong></dt>
+</dl>
+<dl><dt><strong>object_category</strong></dt>
+</dl>
+<dl><dt><strong>object_class</strong></dt>
+</dl>
+<hr>
+Data descriptors inherited from <a href="ad_ldap.ad_ldap.html#ADObject">ADObject</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Domain">class <strong>Domain</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Represents&nbsp;an&nbsp;Active&nbsp;Directory&nbsp;<a href="#Domain">Domain</a>.<br>
+&nbsp;<br>
+The&nbsp;<a href="#Domain">Domain</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;performs&nbsp;all&nbsp;interactions&nbsp;with&nbsp;Active&nbsp;Directory,&nbsp;including<br>
+searching&nbsp;for&nbsp;objects,&nbsp;modifying&nbsp;objects,&nbsp;and&nbsp;deleting&nbsp;objects.&nbsp;&nbsp;Some&nbsp;tasks<br>
+that&nbsp;can&nbsp;be&nbsp;called&nbsp;from&nbsp;a&nbsp;method&nbsp;of&nbsp;an&nbsp;<a href="#ADObject">ADObject</a>,&nbsp;like&nbsp;Delete()&nbsp;actually<br>
+call&nbsp;the&nbsp;parent&nbsp;<a href="#Domain">Domain</a>&nbsp;<a href="builtins.html#object">object</a>'s&nbsp;method&nbsp;to&nbsp;do&nbsp;the&nbsp;dirty&nbsp;work.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Domain-Connect"><strong>Connect</strong></a>(self, ldap_host, user, password, cert_dir=None, cert_file=None)</dt><dd><tt>Connect&nbsp;to&nbsp;the&nbsp;ldap&nbsp;server.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;ldap_host:&nbsp;&nbsp;The&nbsp;ldap&nbsp;host&nbsp;to&nbsp;connect&nbsp;to<br>
+&nbsp;&nbsp;user:&nbsp;the&nbsp;username&nbsp;for&nbsp;authentication<br>
+&nbsp;&nbsp;password:&nbsp;the&nbsp;password&nbsp;for&nbsp;authentication<br>
+&nbsp;&nbsp;cert_dir:&nbsp;(Optional)&nbsp;The&nbsp;directory&nbsp;containing&nbsp;the&nbsp;SSL&nbsp;cert&nbsp;file<br>
+&nbsp;&nbsp;cert_file:&nbsp;(Optional)The&nbsp;file&nbsp;name&nbsp;of&nbsp;the&nbsp;cert<br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;errors.LDAPConnectionFailedError:&nbsp;if&nbsp;no&nbsp;ldap&nbsp;connection&nbsp;can&nbsp;be&nbsp;made<br>
+&nbsp;&nbsp;errors.InvalidCredentialsError:&nbsp;if&nbsp;the&nbsp;ldap&nbsp;credentials&nbsp;are&nbsp;not&nbsp;accepted</tt></dd></dl>
+
+<dl><dt><a name="Domain-DeleteObject"><strong>DeleteObject</strong></a>(self, distinguished_name)</dt><dd><tt>Delete&nbsp;an&nbsp;<a href="builtins.html#object">object</a>&nbsp;from&nbsp;Active&nbsp;Directory.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;distinguished_name:&nbsp;the&nbsp;full&nbsp;distinguished&nbsp;name&nbsp;of&nbsp;the&nbsp;<a href="builtins.html#object">object</a><br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;errors.ADDomainNotConnectedError:&nbsp;if&nbsp;used&nbsp;before&nbsp;calling&nbsp;<a href="#Domain-Connect">Connect</a>()</tt></dd></dl>
+
+<dl><dt><a name="Domain-Disconnect"><strong>Disconnect</strong></a>(self)</dt><dd><tt>Disconnects&nbsp;from&nbsp;ldap.</tt></dd></dl>
+
+<dl><dt><a name="Domain-GetComputerByDN"><strong>GetComputerByDN</strong></a>(self, distinguished_name)</dt><dd><tt>Gets&nbsp;a&nbsp;<a href="#Computer">Computer</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;based&nbsp;on&nbsp;the&nbsp;distinguished&nbsp;name(DN).<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;distinguished_name:&nbsp;&nbsp;A&nbsp;string&nbsp;with&nbsp;the&nbsp;distinguished&nbsp;name&nbsp;of&nbsp;the&nbsp;<a href="builtins.html#object">object</a><br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;A&nbsp;<a href="#Computer">Computer</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;on&nbsp;success,&nbsp;nothing&nbsp;if&nbsp;no&nbsp;user&nbsp;found.</tt></dd></dl>
+
+<dl><dt><a name="Domain-GetComputerByName"><strong>GetComputerByName</strong></a>(self, computer_name)</dt><dd><tt>Get&nbsp;a&nbsp;<a href="#Computer">Computer</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;from&nbsp;AD&nbsp;based&nbsp;on&nbsp;its&nbsp;hostname.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;computer_name:&nbsp;the&nbsp;hostname&nbsp;of&nbsp;the&nbsp;computer.&nbsp;&nbsp;can&nbsp;be&nbsp;fqdn,&nbsp;sAMAccountName,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or&nbsp;computername<br>
+Returns:<br>
+&nbsp;&nbsp;A&nbsp;<a href="#Computer">Computer</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;on&nbsp;success,&nbsp;nothing&nbsp;if&nbsp;no&nbsp;computer&nbsp;found.</tt></dd></dl>
+
+<dl><dt><a name="Domain-GetContainerByDN"><strong>GetContainerByDN</strong></a>(self, distinguished_name)</dt><dd><tt>Gets&nbsp;a&nbsp;<a href="#Group">Group</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;based&nbsp;on&nbsp;the&nbsp;distinguished&nbsp;name(DN).<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;distinguished_name:&nbsp;&nbsp;A&nbsp;string&nbsp;with&nbsp;the&nbsp;distinguished&nbsp;name&nbsp;of&nbsp;the&nbsp;<a href="builtins.html#object">object</a><br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;A&nbsp;<a href="#User">User</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;on&nbsp;success,&nbsp;nothing&nbsp;if&nbsp;no&nbsp;user&nbsp;found.</tt></dd></dl>
+
+<dl><dt><a name="Domain-GetGroupByDN"><strong>GetGroupByDN</strong></a>(self, distinguished_name)</dt><dd><tt>Gets&nbsp;a&nbsp;<a href="#Group">Group</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;based&nbsp;on&nbsp;the&nbsp;distinguished&nbsp;name(DN).<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;distinguished_name:&nbsp;&nbsp;A&nbsp;string&nbsp;with&nbsp;the&nbsp;distinguished&nbsp;name&nbsp;of&nbsp;the&nbsp;<a href="builtins.html#object">object</a><br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;A&nbsp;<a href="#User">User</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;on&nbsp;success,&nbsp;nothing&nbsp;if&nbsp;no&nbsp;user&nbsp;found.</tt></dd></dl>
+
+<dl><dt><a name="Domain-GetGroupByName"><strong>GetGroupByName</strong></a>(self, group_name)</dt><dd><tt>Get&nbsp;a&nbsp;<a href="#Group">Group</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;from&nbsp;AD&nbsp;based&nbsp;on&nbsp;its&nbsp;hostname.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;group_name:&nbsp;the&nbsp;name&nbsp;of&nbsp;the&nbsp;group.<br>
+Returns:<br>
+&nbsp;&nbsp;A&nbsp;<a href="#Group">Group</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;on&nbsp;success,&nbsp;nothing&nbsp;if&nbsp;no&nbsp;computer&nbsp;found.</tt></dd></dl>
+
+<dl><dt><a name="Domain-GetObjectByDN"><strong>GetObjectByDN</strong></a>(self, distinguished_name)</dt><dd><tt>Gets&nbsp;an&nbsp;<a href="#ADObject">ADObject</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;based&nbsp;on&nbsp;the&nbsp;distinguished&nbsp;name(DN).<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;distinguished_name:&nbsp;&nbsp;A&nbsp;string&nbsp;with&nbsp;the&nbsp;distinguished&nbsp;name&nbsp;of&nbsp;the&nbsp;<a href="builtins.html#object">object</a><br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;An&nbsp;<a href="#ADObject">ADObject</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;on&nbsp;success,&nbsp;nothing&nbsp;if&nbsp;no&nbsp;user&nbsp;found.</tt></dd></dl>
+
+<dl><dt><a name="Domain-GetObjectByName"><strong>GetObjectByName</strong></a>(self, name)</dt><dd><tt>Get&nbsp;an&nbsp;<a href="#ADObject">ADObject</a>&nbsp;from&nbsp;AD&nbsp;based&nbsp;on&nbsp;its&nbsp;sAMAccountName.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;name:&nbsp;the&nbsp;Windows&nbsp;username&nbsp;(sAMAccountName)&nbsp;of&nbsp;the&nbsp;user<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;An&nbsp;<a href="#ADObject">ADObject</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;on&nbsp;success,&nbsp;nothing&nbsp;if&nbsp;no&nbsp;user&nbsp;found.</tt></dd></dl>
+
+<dl><dt><a name="Domain-GetRootDseAttrs"><strong>GetRootDseAttrs</strong></a>(self)</dt><dd><tt>Gets&nbsp;the&nbsp;root&nbsp;DSE&nbsp;attributes.</tt></dd></dl>
+
+<dl><dt><a name="Domain-GetUserByDN"><strong>GetUserByDN</strong></a>(self, distinguished_name)</dt><dd><tt>Gets&nbsp;a&nbsp;<a href="#User">User</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;based&nbsp;on&nbsp;the&nbsp;distinguished&nbsp;name(DN).<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;distinguished_name:&nbsp;&nbsp;A&nbsp;string&nbsp;with&nbsp;the&nbsp;distinguished&nbsp;name&nbsp;of&nbsp;the&nbsp;<a href="builtins.html#object">object</a><br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;A&nbsp;<a href="#User">User</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;on&nbsp;success,&nbsp;nothing&nbsp;if&nbsp;no&nbsp;user&nbsp;found.</tt></dd></dl>
+
+<dl><dt><a name="Domain-GetUserByName"><strong>GetUserByName</strong></a>(self, user_name)</dt><dd><tt>Get&nbsp;a&nbsp;user&nbsp;<a href="builtins.html#object">object</a>&nbsp;from&nbsp;AD&nbsp;based&nbsp;on&nbsp;its&nbsp;sAMAccountName.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;user_name:&nbsp;the&nbsp;Windows&nbsp;username&nbsp;(sAMAccountName)&nbsp;of&nbsp;the&nbsp;user<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;A&nbsp;user&nbsp;<a href="builtins.html#object">object</a>&nbsp;on&nbsp;success,&nbsp;nothing&nbsp;if&nbsp;no&nbsp;user&nbsp;found.</tt></dd></dl>
+
+<dl><dt><a name="Domain-GuessObjectType"><strong>GuessObjectType</strong></a>(self, obj)</dt><dd><tt>Try&nbsp;to&nbsp;find&nbsp;the&nbsp;best&nbsp;ad_ldap&nbsp;<a href="builtins.html#object">object</a>&nbsp;class&nbsp;for&nbsp;the&nbsp;<a href="builtins.html#object">object</a>.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;obj:&nbsp;an&nbsp;<a href="#ADObject">ADObject</a>&nbsp;<a href="builtins.html#object">object</a><br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;errors.ADObjectClassOnlyError:&nbsp;if&nbsp;the&nbsp;<a href="builtins.html#object">object</a>&nbsp;passed&nbsp;is&nbsp;not&nbsp;an&nbsp;<a href="#ADObject">ADObject</a><br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;If&nbsp;the&nbsp;<a href="builtins.html#object">object</a>&nbsp;type&nbsp;can&nbsp;be&nbsp;guessed:&nbsp;return&nbsp;an&nbsp;<a href="builtins.html#object">object</a>&nbsp;of&nbsp;that&nbsp;class&nbsp;for<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;same&nbsp;distinguished&nbsp;name<br>
+&nbsp;&nbsp;Otherwise&nbsp;return&nbsp;the&nbsp;<a href="builtins.html#object">object</a>&nbsp;unchanged.</tt></dd></dl>
+
+<dl><dt><a name="Domain-NewObject"><strong>NewObject</strong></a>(self, distinguished_name, properties)</dt><dd><tt>Creates&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>&nbsp;in&nbsp;Active&nbsp;Directory.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;distinguished_name:&nbsp;the&nbsp;desired&nbsp;distinguished&nbsp;name&nbsp;of&nbsp;the&nbsp;<a href="builtins.html#object">object</a><br>
+&nbsp;&nbsp;properties:&nbsp;a&nbsp;dict&nbsp;of&nbsp;properties&nbsp;and&nbsp;values&nbsp;to&nbsp;apply&nbsp;to&nbsp;the&nbsp;new&nbsp;<a href="builtins.html#object">object</a><br>
+&nbsp;<br>
+Note:&nbsp;&nbsp;Join&nbsp;one&nbsp;of&nbsp;the&nbsp;constants.CAT_&nbsp;constants&nbsp;with&nbsp;the&nbsp;<a href="#Domain">Domain</a>&nbsp;<a href="builtins.html#object">object</a>'s<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dn_configuration&nbsp;property&nbsp;to&nbsp;get&nbsp;a&nbsp;DN&nbsp;for&nbsp;objectCategory.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(e.g.&nbsp;'objectCategory':&nbsp;'%s%s'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;%&nbsp;(constants.CAT_USER,&nbsp;ad.dn_configuration))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Each&nbsp;<a href="builtins.html#object">object</a>&nbsp;also&nbsp;needs&nbsp;the&nbsp;correct&nbsp;objectClass.&nbsp;&nbsp;Check&nbsp;out&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constants.CLASS_*&nbsp;constants.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Also,&nbsp;don't&nbsp;forget&nbsp;that&nbsp;the&nbsp;values&nbsp;of&nbsp;the&nbsp;properties&nbsp;hash&nbsp;should<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all&nbsp;be&nbsp;lists,&nbsp;even&nbsp;if&nbsp;they&nbsp;are&nbsp;single-valued&nbsp;attributes.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;True&nbsp;on&nbsp;success<br>
+&nbsp;&nbsp;False&nbsp;on&nbsp;failure<br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;errors.ADDomainNotConnectedError:&nbsp;if&nbsp;used&nbsp;before&nbsp;calling&nbsp;<a href="#Domain-Connect">Connect</a>()</tt></dd></dl>
+
+<dl><dt><a name="Domain-NewUser"><strong>NewUser</strong></a>(self, distinguished_name, properties)</dt></dl>
+
+<dl><dt><a name="Domain-Search"><strong>Search</strong></a>(self, ldap_filter, base_dn=None, obj_class=None, scope=2, properties=None)</dt><dd><tt>Searches&nbsp;ActiveDirectory&nbsp;for&nbsp;objects&nbsp;that&nbsp;match&nbsp;the&nbsp;ldap&nbsp;filter.<br>
+Args:<br>
+&nbsp;&nbsp;ldap_filter:&nbsp;an&nbsp;LDAP&nbsp;filter<br>
+&nbsp;&nbsp;base_dn:&nbsp;the&nbsp;distinguished&nbsp;name&nbsp;of&nbsp;the&nbsp;container&nbsp;to&nbsp;start&nbsp;in<br>
+&nbsp;&nbsp;obj_class:&nbsp;can&nbsp;be&nbsp;any&nbsp;class&nbsp;that&nbsp;inherits&nbsp;from&nbsp;<a href="#ADObject">ADObject</a><br>
+&nbsp;&nbsp;scope:&nbsp;one&nbsp;of&nbsp;the&nbsp;ldap&nbsp;SCOPE_&nbsp;constants<br>
+&nbsp;&nbsp;properties:&nbsp;a&nbsp;list&nbsp;of&nbsp;properties&nbsp;to&nbsp;retrieve<br>
+Returns:<br>
+&nbsp;&nbsp;A&nbsp;list&nbsp;of&nbsp;objects.<br>
+Raises:<br>
+&nbsp;&nbsp;errors.QueryTimeoutError:&nbsp;if&nbsp;the&nbsp;timeout&nbsp;period&nbsp;is&nbsp;exceeded<br>
+&nbsp;&nbsp;errors.ADDomainNotConnectedError:&nbsp;if&nbsp;a&nbsp;search&nbsp;is&nbsp;attempted&nbsp;before&nbsp;calling<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#Domain-Connect">Connect</a>()&nbsp;on&nbsp;the&nbsp;<a href="#Domain">Domain</a>&nbsp;<a href="builtins.html#object">object</a></tt></dd></dl>
+
+<dl><dt><a name="Domain-UpdateObject"><strong>UpdateObject</strong></a>(self, distinguished_name, current_props, updated_props)</dt><dd><tt>Updates&nbsp;an&nbsp;<a href="builtins.html#object">object</a>&nbsp;in&nbsp;Active&nbsp;Directory.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;distinguished_name:&nbsp;the&nbsp;distinguished&nbsp;name&nbsp;of&nbsp;the&nbsp;<a href="builtins.html#object">object</a>&nbsp;to&nbsp;be&nbsp;modified<br>
+&nbsp;&nbsp;current_props:&nbsp;a&nbsp;dict&nbsp;of&nbsp;the&nbsp;current&nbsp;properties&nbsp;and&nbsp;values<br>
+&nbsp;&nbsp;updated_props:&nbsp;a&nbsp;dict&nbsp;of&nbsp;the&nbsp;new&nbsp;properties&nbsp;and&nbsp;values<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;True&nbsp;on&nbsp;success<br>
+&nbsp;&nbsp;False&nbsp;on&nbsp;failure<br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;errors.ADDomainNotConnectedError:&nbsp;if&nbsp;used&nbsp;before&nbsp;calling&nbsp;<a href="#Domain-Connect">Connect</a>()</tt></dd></dl>
+
+<dl><dt><a name="Domain-__init__"><strong>__init__</strong></a>(self)</dt><dd><tt>Initialize&nbsp;the&nbsp;<a href="#Domain">Domain</a>&nbsp;<a href="builtins.html#object">object</a>.</tt></dd></dl>
+
+<dl><dt><a name="Domain-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>dns_name</strong></dt>
+<dd><tt>Constructs&nbsp;the&nbsp;dns&nbsp;name&nbsp;of&nbsp;the&nbsp;domain&nbsp;from&nbsp;the&nbsp;distinguished&nbsp;name.</tt></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Group">class <strong>Group</strong></a>(<a href="ad_ldap.ad_ldap.html#ADObject">ADObject</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Group">Group</a>(distinguished_name,&nbsp;properties,&nbsp;domain_obj)<br>
+&nbsp;<br>
+An&nbsp;Active&nbsp;Directory&nbsp;<a href="#Group">Group</a>&nbsp;<a href="builtins.html#object">object</a>.<br>
+&nbsp;<br>
+This&nbsp;class&nbsp;provides&nbsp;extra&nbsp;methods&nbsp;for&nbsp;manipulating&nbsp;group&nbsp;memberships.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="ad_ldap.ad_ldap.html#Group">Group</a></dd>
+<dd><a href="ad_ldap.ad_ldap.html#ADObject">ADObject</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="Group-AddMembers"><strong>AddMembers</strong></a>(self, member_list)</dt><dd><tt>Add&nbsp;one&nbsp;user&nbsp;to&nbsp;the&nbsp;group.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;member_list:&nbsp;a&nbsp;list&nbsp;of&nbsp;the&nbsp;sAMAccountNames&nbsp;of&nbsp;the&nbsp;users&nbsp;to&nbsp;remove<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;True&nbsp;on&nbsp;success<br>
+&nbsp;&nbsp;False&nbsp;on&nbsp;failure<br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;errors.ADGroupMemberExistsError:&nbsp;if&nbsp;the&nbsp;member&nbsp;was&nbsp;already&nbsp;in&nbsp;the&nbsp;group<br>
+&nbsp;&nbsp;errors.NonListParameterError:&nbsp;if&nbsp;a&nbsp;string&nbsp;was&nbsp;passed&nbsp;by&nbsp;mistake</tt></dd></dl>
+
+<dl><dt><a name="Group-DeleteMembers"><strong>DeleteMembers</strong></a>(self, member_list)</dt><dd><tt>Remove&nbsp;one&nbsp;user&nbsp;from&nbsp;the&nbsp;group.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;member_list:&nbsp;a&nbsp;list&nbsp;of&nbsp;the&nbsp;sAMAccountNames&nbsp;of&nbsp;the&nbsp;users&nbsp;to&nbsp;remove<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;True&nbsp;on&nbsp;success<br>
+&nbsp;&nbsp;False&nbsp;on&nbsp;failure<br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;errors.NonListParameterError:&nbsp;if&nbsp;a&nbsp;string&nbsp;was&nbsp;passed&nbsp;by&nbsp;mistake<br>
+&nbsp;&nbsp;errors.ADGroupMemberDoesNotExistError:&nbsp;if&nbsp;the&nbsp;<a href="builtins.html#object">object</a>&nbsp;to&nbsp;be&nbsp;removed&nbsp;is&nbsp;not<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;member</tt></dd></dl>
+
+<dl><dt><a name="Group-GetMembers"><strong>GetMembers</strong></a>(self)</dt><dd><tt>Retrieves&nbsp;a&nbsp;list&nbsp;of&nbsp;objects&nbsp;that&nbsp;are&nbsp;members.<br>
+&nbsp;<br>
+GetMembers&nbsp;will&nbsp;try&nbsp;to&nbsp;find&nbsp;the&nbsp;appropriate&nbsp;<a href="builtins.html#object">object</a>&nbsp;type&nbsp;for&nbsp;the&nbsp;member&nbsp;if<br>
+if&nbsp;is&nbsp;a&nbsp;user,&nbsp;computer&nbsp;or&nbsp;group.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;A&nbsp;list&nbsp;of&nbsp;objects.</tt></dd></dl>
+
+<dl><dt><a name="Group-OverwriteMembers"><strong>OverwriteMembers</strong></a>(self, member_list)</dt><dd><tt>Overwrite&nbsp;the&nbsp;member&nbsp;list&nbsp;with&nbsp;a&nbsp;list&nbsp;of&nbsp;users.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;member_list:&nbsp;&nbsp;a&nbsp;list&nbsp;of&nbsp;sAMAccountNames&nbsp;of&nbsp;users&nbsp;or&nbsp;groups<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;True&nbsp;on&nbsp;success<br>
+&nbsp;&nbsp;False&nbsp;on&nbsp;failure<br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;errors.NonListParameterError:&nbsp;if&nbsp;a&nbsp;string&nbsp;was&nbsp;passed&nbsp;by&nbsp;mistake</tt></dd></dl>
+
+<dl><dt><a name="Group-__init__"><strong>__init__</strong></a>(self, distinguished_name, properties, domain_obj)</dt><dd><tt>Initialize&nbsp;the&nbsp;AD&nbsp;<a href="builtins.html#object">object</a>.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;distinguished_name:&nbsp;the&nbsp;full&nbsp;distinguished&nbsp;name&nbsp;of&nbsp;the&nbsp;<a href="builtins.html#object">object</a><br>
+&nbsp;&nbsp;properties:&nbsp;if&nbsp;a&nbsp;list,&nbsp;a&nbsp;list&nbsp;of&nbsp;properties&nbsp;to&nbsp;retrieve.&nbsp;&nbsp;if&nbsp;a&nbsp;hash,&nbsp;it&nbsp;is<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;pre-populated&nbsp;list&nbsp;of&nbsp;properties.&nbsp;&nbsp;If&nbsp;a&nbsp;hash&nbsp;is&nbsp;provided&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mandatory&nbsp;properties&nbsp;are&nbsp;missing,&nbsp;then&nbsp;they&nbsp;will&nbsp;be&nbsp;retrieved<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;by&nbsp;an&nbsp;ldap&nbsp;query<br>
+&nbsp;&nbsp;domain_obj:&nbsp;the&nbsp;<a href="#Domain">Domain</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;that&nbsp;the&nbsp;AD&nbsp;<a href="builtins.html#object">object</a>&nbsp;is&nbsp;associated&nbsp;with</tt></dd></dl>
+
+<dl><dt><a name="Group-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="ad_ldap.ad_ldap.html#ADObject">ADObject</a>:<br>
+<dl><dt><a name="Group-Delete"><strong>Delete</strong></a>(self)</dt><dd><tt>Delete&nbsp;the&nbsp;current&nbsp;<a href="builtins.html#object">object</a>&nbsp;from&nbsp;AD.</tt></dd></dl>
+
+<dl><dt><a name="Group-GetProperties"><strong>GetProperties</strong></a>(self, properties)</dt><dd><tt>Updates&nbsp;self.<strong>properties</strong>&nbsp;with&nbsp;the&nbsp;values&nbsp;from&nbsp;AD.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;properties:&nbsp;a&nbsp;list&nbsp;of&nbsp;properties&nbsp;to&nbsp;retrieve<br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;errors.NonListParameterError:&nbsp;if&nbsp;a&nbsp;string&nbsp;is&nbsp;passed&nbsp;instead&nbsp;of&nbsp;a&nbsp;list</tt></dd></dl>
+
+<dl><dt><a name="Group-Move"><strong>Move</strong></a>(self, destination)</dt><dd><tt>Move&nbsp;an&nbsp;AD&nbsp;<a href="builtins.html#object">object</a>&nbsp;from&nbsp;one&nbsp;part&nbsp;of&nbsp;the&nbsp;directory&nbsp;to&nbsp;another.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;destination:&nbsp;the&nbsp;destination&nbsp;DN</tt></dd></dl>
+
+<dl><dt><a name="Group-Refresh"><strong>Refresh</strong></a>(self)</dt><dd><tt>Update&nbsp;all&nbsp;properties&nbsp;with&nbsp;values&nbsp;from&nbsp;AD.</tt></dd></dl>
+
+<dl><dt><a name="Group-SetProperties"><strong>SetProperties</strong></a>(self)</dt><dd><tt>Write&nbsp;changed&nbsp;properties&nbsp;to&nbsp;Active&nbsp;Directory.<br>
+&nbsp;<br>
+Note:&nbsp;A&nbsp;property&nbsp;must&nbsp;be&nbsp;retrieved&nbsp;at&nbsp;least&nbsp;once&nbsp;before&nbsp;updating.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;True:&nbsp;on&nbsp;success<br>
+&nbsp;&nbsp;False:&nbsp;on&nbsp;failure</tt></dd></dl>
+
+<hr>
+Readonly properties inherited from <a href="ad_ldap.ad_ldap.html#ADObject">ADObject</a>:<br>
+<dl><dt><strong>canonical_name</strong></dt>
+<dd><tt>Constructs&nbsp;the&nbsp;canonical&nbsp;name&nbsp;from&nbsp;the&nbsp;distinguished&nbsp;name.</tt></dd>
+</dl>
+<dl><dt><strong>created_time</strong></dt>
+</dl>
+<dl><dt><strong>distinguished_name</strong></dt>
+</dl>
+<dl><dt><strong>modified_time</strong></dt>
+</dl>
+<dl><dt><strong>object_category</strong></dt>
+</dl>
+<dl><dt><strong>object_class</strong></dt>
+</dl>
+<hr>
+Data descriptors inherited from <a href="ad_ldap.ad_ldap.html#ADObject">ADObject</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="User">class <strong>User</strong></a>(<a href="ad_ldap.ad_ldap.html#ADObject">ADObject</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#User">User</a>(distinguished_name,&nbsp;properties,&nbsp;domain_obj)<br>
+&nbsp;<br>
+An&nbsp;Active&nbsp;Directory&nbsp;user&nbsp;<a href="builtins.html#object">object</a>.<br>
+&nbsp;<br>
+This&nbsp;class&nbsp;exposes&nbsp;user-specific&nbsp;properties&nbsp;and&nbsp;also&nbsp;adds&nbsp;methods&nbsp;for&nbsp;locking,<br>
+unlocking,&nbsp;disabling&nbsp;and&nbsp;enabling&nbsp;accounts.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="ad_ldap.ad_ldap.html#User">User</a></dd>
+<dd><a href="ad_ldap.ad_ldap.html#ADObject">ADObject</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="User-Disable"><strong>Disable</strong></a>(self)</dt><dd><tt>Disable&nbsp;the&nbsp;user&nbsp;<a href="builtins.html#object">object</a>&nbsp;in&nbsp;AD.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;True&nbsp;on&nbsp;success<br>
+&nbsp;&nbsp;False&nbsp;on&nbsp;failure<br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;UserNotEnabledError:&nbsp;if&nbsp;the&nbsp;user&nbsp;is&nbsp;already&nbsp;disabled</tt></dd></dl>
+
+<dl><dt><a name="User-Enable"><strong>Enable</strong></a>(self)</dt><dd><tt>Enable&nbsp;the&nbsp;user&nbsp;<a href="builtins.html#object">object</a>&nbsp;in&nbsp;AD.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;True&nbsp;on&nbsp;success<br>
+&nbsp;&nbsp;False&nbsp;on&nbsp;failure<br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;UserNotDisabledError:&nbsp;if&nbsp;the&nbsp;user&nbsp;is&nbsp;not&nbsp;disabled</tt></dd></dl>
+
+<dl><dt><a name="User-Unlock"><strong>Unlock</strong></a>(self)</dt><dd><tt>Unlock&nbsp;the&nbsp;user&nbsp;<a href="builtins.html#object">object</a>&nbsp;in&nbsp;AD.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;True&nbsp;on&nbsp;success<br>
+&nbsp;&nbsp;False&nbsp;on&nbsp;failure<br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;UserNotLockedOutError:&nbsp;if&nbsp;the&nbsp;user&nbsp;is&nbsp;not&nbsp;locked&nbsp;out</tt></dd></dl>
+
+<dl><dt><a name="User-__init__"><strong>__init__</strong></a>(self, distinguished_name, properties, domain_obj)</dt><dd><tt>Initialize&nbsp;the&nbsp;AD&nbsp;<a href="builtins.html#object">object</a>.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;distinguished_name:&nbsp;the&nbsp;full&nbsp;distinguished&nbsp;name&nbsp;of&nbsp;the&nbsp;<a href="builtins.html#object">object</a><br>
+&nbsp;&nbsp;properties:&nbsp;if&nbsp;a&nbsp;list,&nbsp;a&nbsp;list&nbsp;of&nbsp;properties&nbsp;to&nbsp;retrieve.&nbsp;&nbsp;if&nbsp;a&nbsp;hash,&nbsp;it&nbsp;is<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;pre-populated&nbsp;list&nbsp;of&nbsp;properties.&nbsp;&nbsp;If&nbsp;a&nbsp;hash&nbsp;is&nbsp;provided&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mandatory&nbsp;properties&nbsp;are&nbsp;missing,&nbsp;then&nbsp;they&nbsp;will&nbsp;be&nbsp;retrieved<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;by&nbsp;an&nbsp;ldap&nbsp;query<br>
+&nbsp;&nbsp;domain_obj:&nbsp;the&nbsp;<a href="#Domain">Domain</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;that&nbsp;the&nbsp;AD&nbsp;<a href="builtins.html#object">object</a>&nbsp;is&nbsp;associated&nbsp;with</tt></dd></dl>
+
+<dl><dt><a name="User-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>disabled</strong></dt>
+</dl>
+<dl><dt><strong>display_name</strong></dt>
+</dl>
+<dl><dt><strong>locked_out</strong></dt>
+</dl>
+<dl><dt><strong>msds_ua_control_computed</strong></dt>
+</dl>
+<dl><dt><strong>pwd_expired</strong></dt>
+</dl>
+<dl><dt><strong>pwd_never_expires</strong></dt>
+</dl>
+<dl><dt><strong>user_account_control</strong></dt>
+</dl>
+<dl><dt><strong>username</strong></dt>
+</dl>
+<hr>
+Methods inherited from <a href="ad_ldap.ad_ldap.html#ADObject">ADObject</a>:<br>
+<dl><dt><a name="User-Delete"><strong>Delete</strong></a>(self)</dt><dd><tt>Delete&nbsp;the&nbsp;current&nbsp;<a href="builtins.html#object">object</a>&nbsp;from&nbsp;AD.</tt></dd></dl>
+
+<dl><dt><a name="User-GetProperties"><strong>GetProperties</strong></a>(self, properties)</dt><dd><tt>Updates&nbsp;self.<strong>properties</strong>&nbsp;with&nbsp;the&nbsp;values&nbsp;from&nbsp;AD.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;properties:&nbsp;a&nbsp;list&nbsp;of&nbsp;properties&nbsp;to&nbsp;retrieve<br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;errors.NonListParameterError:&nbsp;if&nbsp;a&nbsp;string&nbsp;is&nbsp;passed&nbsp;instead&nbsp;of&nbsp;a&nbsp;list</tt></dd></dl>
+
+<dl><dt><a name="User-Move"><strong>Move</strong></a>(self, destination)</dt><dd><tt>Move&nbsp;an&nbsp;AD&nbsp;<a href="builtins.html#object">object</a>&nbsp;from&nbsp;one&nbsp;part&nbsp;of&nbsp;the&nbsp;directory&nbsp;to&nbsp;another.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;destination:&nbsp;the&nbsp;destination&nbsp;DN</tt></dd></dl>
+
+<dl><dt><a name="User-Refresh"><strong>Refresh</strong></a>(self)</dt><dd><tt>Update&nbsp;all&nbsp;properties&nbsp;with&nbsp;values&nbsp;from&nbsp;AD.</tt></dd></dl>
+
+<dl><dt><a name="User-SetProperties"><strong>SetProperties</strong></a>(self)</dt><dd><tt>Write&nbsp;changed&nbsp;properties&nbsp;to&nbsp;Active&nbsp;Directory.<br>
+&nbsp;<br>
+Note:&nbsp;A&nbsp;property&nbsp;must&nbsp;be&nbsp;retrieved&nbsp;at&nbsp;least&nbsp;once&nbsp;before&nbsp;updating.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;True:&nbsp;on&nbsp;success<br>
+&nbsp;&nbsp;False:&nbsp;on&nbsp;failure</tt></dd></dl>
+
+<hr>
+Readonly properties inherited from <a href="ad_ldap.ad_ldap.html#ADObject">ADObject</a>:<br>
+<dl><dt><strong>canonical_name</strong></dt>
+<dd><tt>Constructs&nbsp;the&nbsp;canonical&nbsp;name&nbsp;from&nbsp;the&nbsp;distinguished&nbsp;name.</tt></dd>
+</dl>
+<dl><dt><strong>created_time</strong></dt>
+</dl>
+<dl><dt><strong>distinguished_name</strong></dt>
+</dl>
+<dl><dt><strong>modified_time</strong></dt>
+</dl>
+<dl><dt><strong>object_category</strong></dt>
+</dl>
+<dl><dt><strong>object_class</strong></dt>
+</dl>
+<hr>
+Data descriptors inherited from <a href="ad_ldap.ad_ldap.html#ADObject">ADObject</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-ADFileTimeToUnix"><strong>ADFileTimeToUnix</strong></a>(ad_time)</dt><dd><tt>Converts&nbsp;AD&nbsp;double-wide&nbsp;int&nbsp;format&nbsp;to&nbsp;seconds&nbsp;since&nbsp;the&nbsp;epoch&nbsp;format.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;ad_time:&nbsp;a&nbsp;64-bit&nbsp;integer&nbsp;time&nbsp;format&nbsp;used&nbsp;by&nbsp;AD&nbsp;with&nbsp;the&nbsp;number&nbsp;of&nbsp;100ns<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intervals&nbsp;since&nbsp;January&nbsp;1,&nbsp;1601.<br>
+&nbsp;<br>
+Note:&nbsp;cribbed&nbsp;from&nbsp;filetimes.py&nbsp;at&nbsp;<a href="http://reliablybroken.com/b/2009/09/">http://reliablybroken.com/b/2009/09/</a><br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;An&nbsp;int&nbsp;with&nbsp;the&nbsp;number&nbsp;of&nbsp;seconds&nbsp;since&nbsp;January&nbsp;1,&nbsp;1970.</tt></dd></dl>
+ <dl><dt><a name="-ADTextTimeToUnix"><strong>ADTextTimeToUnix</strong></a>(text_time)</dt><dd><tt>Converts&nbsp;alternate&nbsp;time&nbsp;format&nbsp;text&nbsp;strings&nbsp;to&nbsp;seconds&nbsp;since&nbsp;the&nbsp;epoch.<br>
+&nbsp;<br>
+Some&nbsp;Active&nbsp;Directory&nbsp;properties&nbsp;are&nbsp;stored&nbsp;in&nbsp;a&nbsp;YYYYMMDDHHMMSS.0Z&nbsp;format.<br>
+See&nbsp;<a href="http://msdn.microsoft.com/en-us/library/aa772189(VS.85).aspx">http://msdn.microsoft.com/en-us/library/aa772189(VS.85).aspx</a>&nbsp;for&nbsp;details.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;text_time:&nbsp;the&nbsp;string&nbsp;containing&nbsp;the&nbsp;time&nbsp;value.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;The&nbsp;number&nbsp;of&nbsp;seconds&nbsp;since&nbsp;the&nbsp;epoch.</tt></dd></dl>
+ <dl><dt><a name="-BitmaskBool"><strong>BitmaskBool</strong></a>(bitmask, value)</dt><dd><tt>Returns&nbsp;True&nbsp;or&nbsp;False&nbsp;depending&nbsp;on&nbsp;whether&nbsp;a&nbsp;particular&nbsp;bit&nbsp;has&nbsp;been&nbsp;set.<br>
+&nbsp;<br>
+Microsoft&nbsp;uses&nbsp;bitmasks&nbsp;as&nbsp;a&nbsp;compact&nbsp;way&nbsp;of&nbsp;denoting&nbsp;a&nbsp;number&nbsp;of&nbsp;boolean<br>
+settings.&nbsp;&nbsp;The&nbsp;second&nbsp;bit,&nbsp;for&nbsp;example,&nbsp;might&nbsp;be&nbsp;the&nbsp;ADS_UF_ACCOUNTDISABLE<br>
+bit,&nbsp;so&nbsp;if&nbsp;the&nbsp;second&nbsp;bit&nbsp;is&nbsp;a&nbsp;1,&nbsp;then&nbsp;the&nbsp;account&nbsp;is&nbsp;disabled,&nbsp;and&nbsp;if&nbsp;it&nbsp;is<br>
+a&nbsp;0,&nbsp;then&nbsp;it&nbsp;is&nbsp;not.<br>
+&nbsp;<br>
+As&nbsp;an&nbsp;example,&nbsp;to&nbsp;create&nbsp;the&nbsp;'disabled'&nbsp;property&nbsp;of&nbsp;a&nbsp;<a href="#User">User</a>&nbsp;<a href="builtins.html#object">object</a>,&nbsp;we&nbsp;use&nbsp;the<br>
+userAccountControl&nbsp;property&nbsp;and&nbsp;ADS_UF_ACCOUNTDISABLE&nbsp;constant.<br>
+&nbsp;<br>
+<a href="#-BitmaskBool">BitmaskBool</a>(user.user_account_control,&nbsp;constants.ADS_UF_ACCOUNTDISABLE)<br>
+This&nbsp;will&nbsp;return&nbsp;True&nbsp;if&nbsp;the&nbsp;bit&nbsp;is&nbsp;set&nbsp;in&nbsp;user.user_account_control.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;bitmask:&nbsp;a&nbsp;number&nbsp;representing&nbsp;a&nbsp;bitmask<br>
+&nbsp;&nbsp;value:&nbsp;&nbsp;the&nbsp;value&nbsp;to&nbsp;be&nbsp;checked&nbsp;(usually&nbsp;a&nbsp;known&nbsp;constant)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;True&nbsp;if&nbsp;the&nbsp;bit&nbsp;has&nbsp;been&nbsp;set,&nbsp;False&nbsp;if&nbsp;it&nbsp;has&nbsp;not.</tt></dd></dl>
+ <dl><dt><a name="-Escape"><strong>Escape</strong></a>(text)</dt><dd><tt>Escapes&nbsp;text&nbsp;to&nbsp;be&nbsp;used&nbsp;in&nbsp;an&nbsp;ldap&nbsp;filter.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;text:&nbsp;The&nbsp;text&nbsp;to&nbsp;be&nbsp;escaped<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;The&nbsp;escaped&nbsp;text.</tt></dd></dl>
+ <dl><dt><a name="-ToStr"><strong>ToStr</strong></a>(byte_string)</dt><dd><tt>Converts&nbsp;a&nbsp;string&nbsp;in&nbsp;bytes&nbsp;form&nbsp;to&nbsp;UTF-8.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;byte_string:&nbsp;A&nbsp;byte-encoded&nbsp;string.<br>
+&nbsp;&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;The&nbsp;byte-encoded&nbsp;string&nbsp;in&nbsp;UTF-8.</tt></dd></dl>
+</td></tr></table>
+</body></html>
