@@ -66,13 +66,27 @@ def ToStr(byte_string):
     byte_string: A byte-encoded string.
     
   Returns:
-    The byte-encoded string in UTF-8.
+    The byte-encoded string in UTF-8, or the original object if already a string.
   """
   if isinstance(byte_string, str):
     return byte_string
   else:
     return byte_string.decode('utf-8')
 
+
+def ToBytes(in_string):
+  """Converts a string into a byte stream.
+  
+  Args:
+    string: The string to convert.
+  
+  Returns:
+    The converted string, or the original string if already a byte stream.
+  """
+  if isinstance(in_string, bytes):
+    return in_string
+  else:
+    return bytes(in_string, 'utf-8')
 
 def ADTextTimeToUnix(text_time):
   """Converts alternate time format text strings to seconds since the epoch.
@@ -848,7 +862,7 @@ class User(ADObject):
 
     uac = int(self.properties['userAccountControl'][0])
     value = uac ^ constants.ADS_UF_ACCOUNTDISABLE
-    self.properties['userAccountControl'] = [str(value)]
+    self.properties['userAccountControl'] = [ToStr(value)]
     self.SetProperties()
 
     if not self.disabled:
@@ -1001,7 +1015,7 @@ class Group(ADObject):
     return output
 
   def AddMembers(self, member_list):
-    """Add one user to the group.
+    """Add users to the group.
 
     Args:
       member_list: a list of the sAMAccountNames of the users to remove
@@ -1023,7 +1037,7 @@ class Group(ADObject):
       result = self._domain_obj.GetObjectByName(name)
 
       if result:
-        members_to_add.append(result.distinguished_name)
+        members_to_add.append(ToBytes(result.distinguished_name))
 
     for member in members_to_add:
       if member in self.properties['member']:
