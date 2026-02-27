@@ -126,10 +126,7 @@ def BitmaskBool(bitmask, value):
   Returns:
     True if the bit has been set, False if it has not.
   """
-  if int(bitmask) & int(value):
-    return True
-  else:
-    return False
+  return bool(int(bitmask) & int(value))
 
 
 def Escape(text):
@@ -337,7 +334,7 @@ class Domain(object):
 
   
   def NewUser(self, distinguished_name, properties):
-    properties['objectCategory'] = constants.CAT_USER + bytes(self.dn_configuration, 'utf-8')
+    properties['objectCategory'] = constants.CAT_USER + ToBytes(self.dn_configuration)
     properties['objectClass'] = constants.CLASS_USER
 
     for prop in constants.MANDATORY_PROPS_USER:
@@ -568,9 +565,9 @@ class Domain(object):
     elif 'CN=Group' in obj.object_category:
       return self.GetGroupByDN(obj.distinguished_name)
     elif 'CN=Container' in obj.object_category:
-      return self.GetContainterByDN(obj.distinguished_name)
+      return self.GetContainerByDN(obj.distinguished_name)
     elif 'CN=Organizational-Unit' in obj.object_category:
-      return self.GetContainterByDN(obj.distinguished_name)
+      return self.GetContainerByDN(obj.distinguished_name)
     else:
       return obj
 
@@ -633,14 +630,14 @@ class ADObject(object):
     if not self.properties['whenCreated'][0]:
       return 0
     else:
-      return TextTimeToUnix(self.properties['whenCreated'][0])
+      return ADTextTimeToUnix(self.properties['whenCreated'][0])
 
   @property
   def modified_time(self):
     if not self.properties['whenChanged'][0]:
       return 0
     else:
-      return TextTimeToUnix(self.properties['whenChanged'][0])
+      return ADTextTimeToUnix(self.properties['whenChanged'][0])
 
   @property
   def canonical_name(self):
@@ -667,7 +664,7 @@ class ADObject(object):
     Raises:
       errors.NonListParameterError: if a string is passed instead of a list
     """
-    if properties.__class__.__name__ in ('str', 'unicode'):
+    if isinstance(properties, str):
       raise errors.NonListParameterError
 
     ldap_filter = 'distinguishedName=%s' % Escape(self.distinguished_name)
@@ -695,7 +692,7 @@ class ADObject(object):
     except IndexError:
       prefix = 'OU=%s' % constants.RE_OU.findall(self.distinguished_name)[0]
 
-    self.properties['distinguishedName'] = '%s,%s' % (prefix, destination)
+    self.properties['distinguishedName'] = ['%s,%s' % (prefix, destination)]
     self.SetProperties()
 
   def Delete(self):
